@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.server.ResponseStatusException
-import java.util.UUID
 import javax.validation.Valid
 
 
@@ -27,12 +26,16 @@ class TopicsController(
 ) {
 
     @GetMapping
-    fun index(): ResponseEntity<List<Topic>>{
-       return ResponseEntity.status(HttpStatus.OK).body(this.topicsService.list())
+    fun index(
+        @RequestParam(required = false) courseName: String?
+    ): ResponseEntity<List<Topic>>{
+       return ResponseEntity
+           .status(HttpStatus.OK)
+           .body(this.topicsService.index(courseName))
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: UUID): ResponseEntity<Topic>{
+    fun findById(@PathVariable id: Long): ResponseEntity<Topic>{
         val topic = this.topicsService.findById(id)
 
         return ResponseEntity.status(HttpStatus.OK).body(topic)
@@ -49,7 +52,7 @@ class TopicsController(
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable id: UUID){
+    fun delete(@PathVariable id: Long){
         this.topicsService.findById(id)
         this.topicsService.delete(id)
     }

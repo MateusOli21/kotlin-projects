@@ -4,38 +4,40 @@ import com.api.forum.dtos.CreateTopicDto
 import com.api.forum.exceptions.NotFoundException
 import com.api.forum.mappers.CreateToTopicMapper
 import com.api.forum.models.Topic
+import com.api.forum.repositories.TopicRepository
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 @Service
 class TopicsService(
-    private var topics: MutableList<Topic> = ArrayList(),
-    private val createToTopicMapper: CreateToTopicMapper
+    private val createToTopicMapper: CreateToTopicMapper,
+    private val topicRepository: TopicRepository,
 ) {
 
-    fun list(): List<Topic>{
-        return this.topics
+    fun index(courseName: String?): List<Topic>{
+        if(courseName !== null){
+            return this.topicRepository.findByCourseNameIgnoreCase(courseName)
+        }
+
+        return this.topicRepository.findAll()
     }
 
-    fun findById(id: UUID): Topic? {
-        return topics.stream()
-            .filter { topic -> topic.id == id }
-            .findFirst()
-            .orElseThrow { NotFoundException("Tópico não encontrado") }
+    fun findById(id: Long): Topic {
+        return this.topicRepository
+            .findById(id)
+            .orElseThrow { NotFoundException("Não foi possível encontrar tópico") }
     }
 
-    fun create(topicDto: CreateTopicDto): Topic{
+    fun create(topicDto: CreateTopicDto): Topic {
         val newTopic: Topic = this.createToTopicMapper.map(topicDto)
-        newTopic.id = UUID.randomUUID()
 
-        this.topics.add(newTopic)
+        this.topicRepository.save(newTopic)
 
         return newTopic
     }
 
-    fun delete(id: UUID) {
+    fun delete(id: Long) {
         val topic = this.findById(id)
 
-        this.topics.remove(topic)
+        this.topicRepository.delete(topic)
     }
 }
