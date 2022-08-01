@@ -11,7 +11,7 @@ class CoursesService(
     private val courseRepository: CourseRepository
 ) {
 
-    fun index(): List<Course>{
+    fun index(): List<Course> {
         return this.courseRepository.findAll()
     }
 
@@ -21,7 +21,7 @@ class CoursesService(
         return this.courseRepository.save(newCourse)
     }
 
-    fun findById(id: Long): Course{
+    fun findById(id: Long): Course {
         return this.courseRepository
             .findById(id)
             .orElseThrow { NotFoundException("Curso não encontrado") }

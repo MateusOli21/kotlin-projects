@@ -10,13 +10,11 @@ import org.springframework.stereotype.Service
 @Service
 class TopicsService(
     private val createToTopicMapper: CreateToTopicMapper,
-    private val topicRepository: TopicRepository,
+    private val topicRepository: TopicRepository
 ) {
 
-    fun index(courseName: String?): List<Topic>{
-        if(courseName !== null){
-            return this.topicRepository.findByCourseNameIgnoreCase(courseName)
-        }
+    fun index(courseName: String?): List<Topic> {
+        if (courseName !== null) return this.topicRepository.findByCourseNameIgnoreCase(courseName)
 
         return this.topicRepository.findAll()
     }

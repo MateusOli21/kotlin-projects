@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class ForumApplication
 
 fun main(args: Array<String>) {
-	runApplication<ForumApplication>(*args)
+    runApplication<ForumApplication>(*args)
 }

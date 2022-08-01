@@ -4,6 +4,7 @@ import com.api.forum.dtos.CreateTopicDto
 import com.api.forum.models.Topic
 import com.api.forum.services.CoursesService
 import com.api.forum.services.TopicsService
+import javax.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import javax.validation.Valid
-
 
 @RestController
 @RequestMapping("/topics")
@@ -28,21 +27,24 @@ class TopicsController(
     @GetMapping
     fun index(
         @RequestParam(required = false) courseName: String?
-    ): ResponseEntity<List<Topic>>{
-       return ResponseEntity
-           .status(HttpStatus.OK)
-           .body(this.topicsService.index(courseName))
+    ): ResponseEntity<List<Topic>> {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(this.topicsService.index(courseName))
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): ResponseEntity<Topic>{
+    fun findById(@PathVariable id: Long): ResponseEntity<Topic> {
         val topic = this.topicsService.findById(id)
 
         return ResponseEntity.status(HttpStatus.OK).body(topic)
     }
 
     @PostMapping
-    fun create(@RequestBody @Valid body: CreateTopicDto): ResponseEntity<Topic> {
+    fun create(
+        @RequestBody @Valid
+        body: CreateTopicDto
+    ): ResponseEntity<Topic> {
         this.coursesService.findById(body.courseId)
 
         val newTopic = this.topicsService.create(body)
@@ -52,9 +54,8 @@ class TopicsController(
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable id: Long){
+    fun delete(@PathVariable id: Long) {
         this.topicsService.findById(id)
         this.topicsService.delete(id)
     }
-
 }

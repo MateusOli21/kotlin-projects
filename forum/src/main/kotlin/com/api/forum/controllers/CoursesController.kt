@@ -3,6 +3,7 @@ package com.api.forum.controllers
 import com.api.forum.dtos.CreateCourseDto
 import com.api.forum.models.Course
 import com.api.forum.services.CoursesService
+import javax.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("/courses")
@@ -22,8 +22,8 @@ class CoursesController(
 ) {
 
     @GetMapping
-    fun index(): List<Course>{
-       return this.coursesService.index()
+    fun index(): List<Course> {
+        return this.coursesService.index()
     }
 
     @GetMapping("/{id}")
@@ -34,7 +34,10 @@ class CoursesController(
     }
 
     @PostMapping
-    fun create(@RequestBody @Valid body: CreateCourseDto): ResponseEntity<Course> {
+    fun create(
+        @RequestBody @Valid
+        body: CreateCourseDto
+    ): ResponseEntity<Course> {
         val course = this.coursesService.create(body)
 
         return ResponseEntity.status(HttpStatus.CREATED).body(course)

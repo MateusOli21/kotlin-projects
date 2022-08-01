@@ -18,6 +18,4 @@ data class Course(
 
     @Column(nullable = false, unique = false, length = 120)
     val category: String = ""
-) {
-
-}
+)

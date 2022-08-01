@@ -1,12 +1,12 @@
 package com.api.forum.exceptions
 
 import com.api.forum.dtos.ErrorExceptionDto
+import javax.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.MethodArgumentNotValidException
-import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
-import javax.servlet.http.HttpServletRequest
+import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class ExceptionHandler {
@@ -16,14 +16,13 @@ class ExceptionHandler {
     fun handleNotFound(
         exception: NotFoundException,
         request: HttpServletRequest
-    ): ErrorExceptionDto{
+    ): ErrorExceptionDto {
         return ErrorExceptionDto(
             status = HttpStatus.NOT_FOUND.value(),
             error = HttpStatus.NOT_FOUND.name,
             message = exception.message,
             path = request.servletPath
         )
-
     }
 
     @ExceptionHandler(Exception::class)
@@ -48,8 +47,9 @@ class ExceptionHandler {
     ): ErrorExceptionDto {
         val errorMessages = HashMap<String, String?>()
 
-        exception.bindingResult.fieldErrors.forEach{
-            err -> errorMessages.put(err.field, err.defaultMessage)
+        exception.bindingResult.fieldErrors.forEach {
+                err ->
+            errorMessages.put(err.field, err.defaultMessage)
         }
 
         return ErrorExceptionDto(

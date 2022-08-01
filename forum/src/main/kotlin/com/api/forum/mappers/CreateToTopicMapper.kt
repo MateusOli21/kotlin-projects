@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 class CreateToTopicMapper(
     private val coursesService: CoursesService,
     private val userService: UserService
-): Mapper<CreateTopicDto, Topic> {
+) : Mapper<CreateTopicDto, Topic> {
     override fun map(t: CreateTopicDto): Topic {
         return Topic(
             title = t.title,
