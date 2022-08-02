@@ -1,7 +1,7 @@
 package com.api.forum.controllers
 
 import com.api.forum.dtos.CreateUserDto
-import com.api.forum.models.User
+import com.api.forum.dtos.ViewUserDto
 import com.api.forum.services.UserService
 import javax.validation.Valid
 import org.springframework.http.HttpStatus
@@ -19,18 +19,20 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/users")
 class UsersController(
-    private val userService: UserService
+    private val userService: UserService,
 ) {
     @GetMapping
-    fun index(): ResponseEntity<List<User>> {
-        return ResponseEntity.status(HttpStatus.OK).body(this.userService.index())
+    fun index(): ResponseEntity<List<ViewUserDto>> {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(this.userService.index())
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): ResponseEntity<User> {
-        val user = this.userService.findById(id)
-
-        return ResponseEntity.status(HttpStatus.OK).body(user)
+    fun findById(@PathVariable id: Long): ResponseEntity<ViewUserDto> {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(this.userService.findById(id))
     }
 
     @PreAuthorize("permitAll()")
@@ -38,7 +40,7 @@ class UsersController(
     fun create(
         @RequestBody @Valid
         body: CreateUserDto
-    ): ResponseEntity<User> {
+    ): ResponseEntity<ViewUserDto> {
         val newUser = this.userService.create(body)
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser)

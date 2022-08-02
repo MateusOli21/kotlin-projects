@@ -1,7 +1,7 @@
 package com.api.forum.controllers
 
 import com.api.forum.dtos.CreateTopicDto
-import com.api.forum.models.Topic
+import com.api.forum.dtos.ViewTopicDto
 import com.api.forum.services.CoursesService
 import com.api.forum.services.TopicsService
 import javax.validation.Valid
@@ -21,35 +21,39 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/topics")
 class TopicsController(
     private val topicsService: TopicsService,
-    private val coursesService: CoursesService
+    private val coursesService: CoursesService,
 ) {
 
     @GetMapping
     fun index(
         @RequestParam(required = false) courseName: String?
-    ): ResponseEntity<List<Topic>> {
+    ): ResponseEntity<List<ViewTopicDto>> {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(this.topicsService.index(courseName))
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): ResponseEntity<Topic> {
+    fun findById(@PathVariable id: Long): ResponseEntity<ViewTopicDto> {
         val topic = this.topicsService.findById(id)
 
-        return ResponseEntity.status(HttpStatus.OK).body(topic)
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(topic)
     }
 
     @PostMapping
     fun create(
         @RequestBody @Valid
         body: CreateTopicDto
-    ): ResponseEntity<Topic> {
+    ): ResponseEntity<ViewTopicDto> {
         this.coursesService.findById(body.courseId)
 
         val newTopic = this.topicsService.create(body)
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(newTopic)
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(newTopic)
     }
 
     @DeleteMapping("/{id}")
