@@ -19,6 +19,8 @@ data class User(
     @Column(nullable = false, length = 40)
     val email: String = "",
 
-    @Column(nullable = false, length = 13)
+    @Column(nullable = false, length = 255)
+    val password: String = "",
+
     val phone: String = ""
 )
