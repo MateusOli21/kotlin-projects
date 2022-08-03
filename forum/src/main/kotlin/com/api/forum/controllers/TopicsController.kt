@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/topics")
 class TopicsController(
     private val topicsService: TopicsService,
-    private val coursesService: CoursesService,
+    private val coursesService: CoursesService
 ) {
 
     @GetMapping

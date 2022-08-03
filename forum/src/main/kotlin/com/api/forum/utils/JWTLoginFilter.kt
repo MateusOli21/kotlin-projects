@@ -20,7 +20,7 @@ class JWTLoginFilter(
         request: HttpServletRequest?,
         response: HttpServletResponse?
     ): Authentication {
-        val user  = ObjectMapper().readValue(
+        val user = ObjectMapper().readValue(
             request?.inputStream,
             LoginCredentialDto::class.java
         )
@@ -42,5 +42,4 @@ class JWTLoginFilter(
 
         response?.addHeader("Authorization", "Bearer $generatedToken")
     }
-
 }

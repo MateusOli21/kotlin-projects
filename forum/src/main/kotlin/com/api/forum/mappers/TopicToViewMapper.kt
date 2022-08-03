@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 @Component
 class TopicToViewMapper(
     private val userToViewMapper: UserToViewMapper
-): Mapper<Topic, ViewTopicDto> {
+) : Mapper<Topic, ViewTopicDto> {
     override fun map(t: Topic): ViewTopicDto {
         return ViewTopicDto(
             id = t.id,

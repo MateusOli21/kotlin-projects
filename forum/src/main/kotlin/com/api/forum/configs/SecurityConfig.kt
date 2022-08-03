@@ -21,41 +21,37 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 class SecurityConfig(
     private val userDetailsService: UserDetailsService,
     private val jwtUtil: JWTUtil
-): WebSecurityConfigurerAdapter() {
+) : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
-        http?.
-        csrf()?.disable()?.
-        authorizeRequests()?.
-        antMatchers(HttpMethod.POST,"/login", "/users")?.permitAll()?.
-        anyRequest()?.authenticated()?.
-        and()?.
-        addFilterBefore(
-            JWTLoginFilter(
-                authManager = authenticationManager(),
-                jwtUtil = jwtUtil
-            ),
-            UsernamePasswordAuthenticationFilter().javaClass
-        )?.
-        addFilterBefore(
-            JWTAuthFilter(jwtUtil = jwtUtil),
-            UsernamePasswordAuthenticationFilter().javaClass
-        )?.
-        sessionManagement()?.
-        sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http
+            ?.csrf()?.disable()
+            ?.authorizeRequests()
+            ?.antMatchers(HttpMethod.POST, "/login", "/users")?.permitAll()
+            ?.anyRequest()?.authenticated()
+            ?.and()
+            ?.addFilterBefore(
+                JWTLoginFilter(
+                    authManager = authenticationManager(),
+                    jwtUtil = jwtUtil
+                ),
+                UsernamePasswordAuthenticationFilter().javaClass
+            )
+            ?.addFilterBefore(
+                JWTAuthFilter(jwtUtil = jwtUtil),
+                UsernamePasswordAuthenticationFilter().javaClass
+            )
+            ?.sessionManagement()
+            ?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
-
     }
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
-        auth?.
-        userDetailsService(userDetailsService)?.
-        passwordEncoder(passwordEncoder())
+        auth
+            ?.userDetailsService(userDetailsService)
+            ?.passwordEncoder(passwordEncoder())
     }
 }
-
-
-

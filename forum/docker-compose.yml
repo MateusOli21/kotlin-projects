@@ -9,3 +9,17 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=forum-db
+
+  app:
+    build: .
+    container_name: forum-app
+    restart: always
+    ports:
+      - 8080:8080
+    links:
+      - database
+    depends_on:
+      - database
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/forum-db
+

@@ -5,7 +5,7 @@ import com.api.forum.models.User
 import org.springframework.stereotype.Component
 
 @Component
-class ViewToUserMapper: Mapper<ViewUserDto, User> {
+class ViewToUserMapper : Mapper<ViewUserDto, User> {
     override fun map(t: ViewUserDto): User {
         return User(
             id = t.id,

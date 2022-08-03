@@ -6,5 +6,5 @@ class CreateUserDto(
     @field:NotEmpty val name: String,
     @field:NotEmpty val email: String,
     @field:NotEmpty val phone: String,
-    @field:NotEmpty val password: String,
+    @field:NotEmpty val password: String
 )

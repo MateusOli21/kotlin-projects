@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class JWTUtil {
-    private val expiration: Long = 60000
+    private val expiration: Long = 600000
 
     @Value("\${jwt.secret}")
     private lateinit var secret: String
@@ -18,7 +18,8 @@ class JWTUtil {
     fun generateToken(email: String): String? {
         return Jwts.builder()
             .setSubject(email)
-            .setExpiration(Date(System.currentTimeMillis() * expiration))
+            .setIssuedAt(Date(System.currentTimeMillis()))
+            .setExpiration(Date(System.currentTimeMillis() + expiration))
             .signWith(SignatureAlgorithm.HS512, secret.toByteArray())
             .compact()
     }
@@ -30,7 +31,7 @@ class JWTUtil {
                 .parseClaimsJws(token)
 
             true
-        }catch(e: IllegalArgumentException) {
+        } catch (e: IllegalArgumentException) {
             false
         }
     }

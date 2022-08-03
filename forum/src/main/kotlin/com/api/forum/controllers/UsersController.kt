@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/users")
 class UsersController(
-    private val userService: UserService,
+    private val userService: UserService
 ) {
     @GetMapping
     fun index(): ResponseEntity<List<ViewUserDto>> {

@@ -18,7 +18,6 @@ class TopicsService(
 ) {
 
     fun index(courseName: String?): List<ViewTopicDto> {
-
         val tops = if (courseName !== null) {
             this.topicRepository.findByCourseNameIgnoreCase(courseName)
         } else {
